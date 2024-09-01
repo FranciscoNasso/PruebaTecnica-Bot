@@ -15,11 +15,11 @@ bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
     clima = types.KeyboardButton('Quiero saber el clima! 🌦️')
     contador = types.KeyboardButton('Quiero Contar! 🔢')
-    markup.add(clima, contador)
+    openai = types.KeyboardButton('Quiero analizar sentimiento! 🧠')
+    option = [[clima], [contador], [openai]]
+    markup = types.ReplyKeyboardMarkup(option)
 
     bot.send_message(message.chat.id, 'Bienvenido', reply_markup=markup)
 
@@ -35,15 +35,23 @@ def callback_query(message):
         new_count = increment_counter_service(user_id)
         bot.send_message(message.chat.id, f'Contador: {new_count}')
 
+    elif message.text == 'Quiero analizar sentimiento! 🧠':
+        bot.send_message(message.chat.id, 'Ingrese el texto para analizar el sentimiento: ')
+        bot.register_next_step_handler(message, get_analyze_sentiment)
+
     else:
-        sentiment = analyze_sentiment_service(message.text)
-        bot.send_message(message.chat.id, sentiment)
+        bot.send_message(message.chat.id, 'Por favor, seleccione una opción válida.')
 
 
 def get_weather(message):
     city = message.text.split()[0]
     weather = get_weather_service(city)
     bot.send_message(message.chat.id, weather)
+
+
+def get_analyze_sentiment(message):
+    sentiment = analyze_sentiment_service(message.text)
+    bot.send_message(message.chat.id, sentiment)
 
 
 if __name__ == '__main__':

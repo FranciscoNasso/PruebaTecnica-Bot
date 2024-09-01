@@ -23,7 +23,7 @@ def analyze_sentiment(prompt: str) -> str:
 
     except openai.error.OpenAIError as e:
         if "You exceeded your current quota" in str(e):
-            return ("Error: Se ha excedido la cuota de OpenAI. Por favor, inténtalo más tarde o contacta al administrador.")
+            return (
+                "Error: Se ha excedido la cuota de OpenAI. Por favor, inténtalo más tarde o contacta al administrador.")
     except Exception as e:
         return f"Error al analizar el sentimiento: {e}"
-

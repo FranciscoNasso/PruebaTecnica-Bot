@@ -69,8 +69,13 @@ def get_weather(city: str) -> str:
             f"{recommendation}"
         )
         return weather_report
+    except requests.exceptions.HTTPError as http_err:
+        if http_err.response.status_code == 404:
+            return "No se encontró la ciudad. Por favor, verifica el nombre."
     except requests.exceptions.RequestException as e:
         return f"Error al obtener al clima: {e}"
     except KeyError as e:
         return "No se pudo obtener la información del clima. Verifica el nombre de la ciudad."
+    except Exception as e:
+        return f"Error al obtener el clima: {e}"
     
