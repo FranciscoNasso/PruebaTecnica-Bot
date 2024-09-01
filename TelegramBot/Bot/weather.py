@@ -3,11 +3,14 @@ import requests
 import os
 from dotenv import load_dotenv
 
+from sentiment_analysis import get_city_interesting_facts as get_city_interesting_facts_service
 
+#Api Key for OpenWeatherMap
 load_dotenv()
 WEATHER_API_KEY = os.getenv('weather_api_key')
 
 
+# Función para obtener la recomendación del clima
 def get_weather_recommendation(weather_condition: str) -> str:
     recommendations = {
         "clear sky": "Es un día soleado. ¡No olvides usar protector solar!",
@@ -27,6 +30,7 @@ def get_weather_recommendation(weather_condition: str) -> str:
     return recommendations.get(weather_condition.lower(), "Disfruta tu día, sea cual sea el clima.")
 
 
+# Traducciones de las condiciones climáticas
 translations = {
     "clear sky": "Cielo despejado",
     "few clouds": "Pocas nubes",
@@ -43,6 +47,7 @@ translations = {
 }
 
 
+# Función para obtener el clima de una ciudad
 def get_weather(city: str) -> str:
     base_url = "http://api.openweathermap.org/data/2.5/weather"
     params = {
@@ -63,10 +68,13 @@ def get_weather(city: str) -> str:
 
         recommendation = get_weather_recommendation(description)
         description = translations.get(description.lower(), description)
+        interesting_facts = get_city_interesting_facts_service(city_name)
 
         weather_report = (
             f"El clima en {city_name} es {description} con una temperatura de {temp}°C.\n"
-            f"{recommendation}"
+            f"{recommendation}\n"
+            f"Datos interesantes sobre {city_name}:\n {interesting_facts}\n"
+
         )
         return weather_report
     except requests.exceptions.HTTPError as http_err:
@@ -78,4 +86,4 @@ def get_weather(city: str) -> str:
         return "No se pudo obtener la información del clima. Verifica el nombre de la ciudad."
     except Exception as e:
         return f"Error al obtener el clima: {e}"
-    
+
