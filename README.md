@@ -41,8 +41,7 @@ TOKEN="your-telegram-bot-token"
 
 weather_api_key = "your-weather-api-key"
 
-# Datos de la base de datos
-DB_HOST="your-host"
+DB_HOST="your-datbase-host"
 DB_NAME="your-database-name"
 DB_USER="your-database-use"
 DB_PASSWORD="your-databe-password"
@@ -90,5 +89,5 @@ Motivación: Esta funcionalidad mejora la experiencia del usuario al proporciona
 
 ## Notas Técnicas
 
-- Persistencia de Datos: El bot utiliza una base de datos SQLite para almacenar y manejar contadores personalizados por usuario.
+- Persistencia de Datos: El bot utiliza una base de datos MySQL para almacenar y manejar contadores personalizados por usuario.
 - Manejo de Excepciones: El bot está diseñado para manejar errores comunes como la falta de conexión a la API o entradas inválidas, asegurando una experiencia de usuario fluida.
